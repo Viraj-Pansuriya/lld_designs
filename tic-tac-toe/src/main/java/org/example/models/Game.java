@@ -19,9 +19,10 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         int remaining = board.getRemaining();
         boolean gameOver = false;
+        board.displayBoard();
         while(board.getRemaining() > 0){
 
-            board.displayBoard();
+
             Player player = players.poll();
             if(player == null){
                 throw new RuntimeException("No more players");
@@ -37,6 +38,7 @@ public class Game {
                 isValidMove = board.fillBoard(player.getCharacter() , x , y);
             }
             gameOver = board.isWinner(player.getCharacter().getPieceType());
+            board.displayBoard();
             if(gameOver){
                 return player;
             }

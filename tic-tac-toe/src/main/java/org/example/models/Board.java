@@ -74,7 +74,51 @@ public class Board {
         }
     }
 
-    public boolean isWinner(PieceType type){
-        return false;
+
+
+    public boolean isWinner(PieceType type) {
+        boolean rowMatch, columnMatch, diagonalMatch = true, antiDiagonalMatch = true;
+
+        // Check rows and columns
+        for (int i = 0; i < size; i++) {
+            rowMatch = true;
+            columnMatch = true;
+
+            for (int j = 0; j < size; j++) {
+                // Check row
+                if (board[i][j] != type) {
+                    rowMatch = false;
+                }
+                // Check column
+                if (board[j][i] != type) {
+                    columnMatch = false;
+                }
+            }
+
+            // If either a row or column matches completely, return true
+            if (rowMatch || columnMatch) {
+                return true;
+            }
+        }
+
+        // Check main diagonal
+        for (int i = 0; i < size; i++) {
+            if (board[i][i] != type) {
+                diagonalMatch = false;
+                break;
+            }
+        }
+
+        // Check anti-diagonal
+        for (int i = 0; i < size; i++) {
+            if (board[i][size - 1 - i] != type) {
+                antiDiagonalMatch = false;
+                break;
+            }
+        }
+
+        // If either diagonal matches completely, return true
+        return diagonalMatch || antiDiagonalMatch;
     }
+
 }
