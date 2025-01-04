@@ -15,6 +15,8 @@ public class Elevator {
     private int currentFloor;
     private int capacity;
     private int numberOfFloors;
+    private int topTOCover = Integer.MIN_VALUE;
+    private int bottomTOCover = Integer.MAX_VALUE;
     private final PriorityQueue<Request> requestQueueForUP = new PriorityQueue<>(Comparator.comparingInt(Request::getDestinationFloor));
 
     private final PriorityQueue<Request> requestQueueForDOWN = new PriorityQueue<>((o1, o2) -> o2.getDestinationFloor() - o1.getDestinationFloor());
@@ -73,18 +75,20 @@ public class Elevator {
                 }
                 log.info("request fetched from queue : " + request);
             }
-
-            assert request != null;
+            if(isUp){
+                assert request != null;
+                topTOCover = Math.max(topTOCover , request.getDestinationFloor());
+            }else{
+                bottomTOCover = Math.min(bottomTOCover , request.getDestinationFloor());
+            }
+            this.direction = (this.currentFloor <= request.getDestinationFloor()) ? Direction.UP : Direction.DOWN;
             processRequest(request , (isUp ? requestQueueForUP : requestQueueForDOWN));
 
         }
     }
 
     private void processRequest(Request request , PriorityQueue<Request> requestQueue) {
-        int startFloor = this.currentFloor;
         int endFloor = request.getDestinationFloor();
-
-        this.direction = (startFloor <= endFloor) ? Direction.UP : Direction.DOWN;
         this.state = State.MOVING;
 
         while (this.currentFloor != endFloor) {
@@ -112,6 +116,12 @@ public class Elevator {
     }
 
     private void processCurrentFloorRequest() {
+        if(this.currentFloor == this.topTOCover){
+            topTOCover = Integer.MIN_VALUE;
+        }
+        if(this.currentFloor == this.bottomTOCover){
+            bottomTOCover = Integer.MAX_VALUE;
+        }
         System.out.println("Elevator " + this.id + " door is opening at floor " + this.currentFloor);
         sleepThread(3000); // Simulate door opening time
         System.out.println("Elevator " + this.id + " door is closing at floor " + this.currentFloor);

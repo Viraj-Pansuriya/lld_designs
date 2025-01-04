@@ -27,18 +27,23 @@ public class ElevatorController {
     }
 
 
-    public void addExternalRequest(int sourceFloor){
+    public Long addExternalRequest(int sourceFloor , Direction direction){
 
-        Elevator elevator = this.requestingServingStrategy.optimizedElevator(sourceFloor , this.elevatorList);
+        Elevator elevator = this.requestingServingStrategy.optimizedElevator(sourceFloor , this.elevatorList , direction);
         Request request = new Request(elevator.getCurrentFloor() , sourceFloor);
         elevator.addRequest(request);
+        elevator.setBottomTOCover(Math.min(elevator.getBottomTOCover() , sourceFloor));
+        elevator.setTopTOCover(Math.max(elevator.getTopTOCover() , sourceFloor));
 
+        return elevator.getId();
     }
 
     public void addInternalRequest(int elevatorNumber, int destinationFloor) {
 
         Elevator elevator = this.elevatorList.get(elevatorNumber - 1);
         Request request = new Request(elevator.getCurrentFloor(), destinationFloor);
+        elevator.setBottomTOCover(Math.min(elevator.getBottomTOCover() , destinationFloor));
+        elevator.setTopTOCover(Math.max(elevator.getTopTOCover() , destinationFloor));
         elevator.addRequest(request);
     }
 }
