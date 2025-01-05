@@ -17,13 +17,12 @@ public class ElevatorController {
         this.capacity = capacity;
         this.requestingServingStrategy = requestingServingStrategy;
 
-        for(long i = 0 ; i< this.numberOfElevators ; i++){
+        for(long i = 0 ; i < this.numberOfElevators ; i++){
             Elevator elevator = new Elevator(i+1 , this.capacity);
             this.elevatorList.add(elevator);
             Thread thread = new Thread(elevator::run);
             thread.start();
         }
-        //TODO : new thread.
     }
 
 

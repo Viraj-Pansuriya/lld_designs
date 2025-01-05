@@ -17,6 +17,7 @@ public class Elevator {
     private int numberOfFloors;
     private int topTOCover = Integer.MIN_VALUE;
     private int bottomTOCover = Integer.MAX_VALUE;
+    private Door door = new Door(DoorState.CLOSED);
     private final PriorityQueue<Request> requestQueueForUP = new PriorityQueue<>(Comparator.comparingInt(Request::getDestinationFloor));
 
     private final PriorityQueue<Request> requestQueueForDOWN = new PriorityQueue<>((o1, o2) -> o2.getDestinationFloor() - o1.getDestinationFloor());
@@ -122,9 +123,11 @@ public class Elevator {
         if(this.currentFloor == this.bottomTOCover){
             bottomTOCover = Integer.MAX_VALUE;
         }
+        this.getDoor().setDoorState(DoorState.OPEN);
         System.out.println("Elevator " + this.id + " door is opening at floor " + this.currentFloor);
         sleepThread(3000); // Simulate door opening time
         System.out.println("Elevator " + this.id + " door is closing at floor " + this.currentFloor);
+        this.getDoor().setDoorState(DoorState.CLOSED);
     }
 
     private void sleepThread(int timeInMillis) {
