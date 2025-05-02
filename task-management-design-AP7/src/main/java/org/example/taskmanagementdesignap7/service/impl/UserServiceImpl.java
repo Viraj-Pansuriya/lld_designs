@@ -31,4 +31,16 @@ public class UserServiceImpl implements UserService {
     public void markAsCompleted(long taskId, long userId){
         userWiseTasks.get(userId).stream().filter(task -> task.getId() == taskId).findFirst().ifPresent(task -> task.setStatus(TaskStatus.COMPLETED));
     }
+
+    @Override
+    public void updateTask(Long id, Task task) {
+
+       if (userWiseTasks.containsKey(id) && userWiseTasks.get(id) != null) {
+           List<Task> tasks = userWiseTasks.get(id);
+           int index = tasks.indexOf(task);
+           if (index != -1) {
+               tasks.set(index, task);
+           }
+       }
+    }
 }

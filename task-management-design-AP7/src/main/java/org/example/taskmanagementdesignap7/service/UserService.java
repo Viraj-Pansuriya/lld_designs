@@ -8,4 +8,6 @@ public interface UserService {
     void deleteTask(long  userId, Task task);
 
     void markAsCompleted(long taskId, long userId);
+
+    void updateTask(Long id, Task task);
 }
