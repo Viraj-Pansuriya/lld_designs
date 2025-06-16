@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private Map<Long , List<Task>> userWiseTasks = new ConcurrentHashMap<>();
+    private final Map<Long , List<Task>> userWiseTasks = new ConcurrentHashMap<>();
 
 
     @Override
